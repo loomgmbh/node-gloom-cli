@@ -1,0 +1,55 @@
+@import 'metrics'
+  
+.sheet
+  position: relative
+  
+  +wide
+    padding-top: 99px
+
+  // Mood
+  &__mood
+    +limiter
+  
+  // Header
+  &__header
+    +limiter
+    display: grid
+    grid-template-columns: 0.4fr 0.6fr
+    padding-left: 60px
+    box-sizing: border-box
+
+    +wide
+      position: absolute
+      top: 0
+
+  // Content
+
+  &__content
+    +limiter
+    width: 100%
+
+  // Footer
+  &__footer
+    +limiter
+    
+  &__footer-bottom
+    padding: 45px 40px 30px
+    box-sizing: border-box
+
+  &__footer-wrapper
+    display: grid
+    grid-template-columns: 1fr
+    margin-bottom: 30px
+
+    +wide
+      margin-bottom: 50px
+      grid-template-columns: 1fr .3fr
+
+  &__footer-right
+    margin-top: auto
+
+  &__footer-left
+    margin-bottom: 30px
+
+    +wide
+      margin-bottom: 0

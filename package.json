@@ -1,0 +1,17 @@
+{
+  "name": "gloom-cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "gloom": "./bin/gloom.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TerraZero",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.1"
+  }
+}

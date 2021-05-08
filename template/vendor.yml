@@ -1,0 +1,6 @@
+swiper:
+  js:
+    https://unpkg.com/swiper/swiper-bundle.min.js: static
+  css:
+    theme:
+      https://unpkg.com/swiper/swiper-bundle.min.css: static

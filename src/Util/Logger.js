@@ -25,13 +25,20 @@ module.exports = class Logger {
 
   success(message) {
     if (this._silent) return;
+    this.nl();
     console.log(Chalk.green('-'.repeat(process.stdout.columns)));
     console.log(Chalk.green('[SUCCESS]: ' + message));
     console.log(Chalk.green('-'.repeat(process.stdout.columns)));
   }
 
+  successLite(message) {
+    if (this._silent) return;
+    console.log(Chalk.green('[SUCCESS]: ' + message));
+  }
+
   abort(message) {
     if (this._silent) return;
+    this.nl();
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
     console.log(Chalk.red('[ABORT]: ' + message));
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
@@ -53,6 +60,11 @@ module.exports = class Logger {
     console.log(Chalk.red('[ERROR]: The command has an unmanaged error. Please inform the developer about the error -> https://github.com/loomgmbh/node-gloom-cli/issues/new'));
     console.log(error);
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
+  }
+
+  errorLite(message) {
+    if (this._silent) return;
+    console.log(Chalk.red('[ERROR]: ' + message));
   }
 
   fatal(error) {

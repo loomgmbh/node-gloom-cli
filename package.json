@@ -12,6 +12,7 @@
   "author": "TerraZero",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^4.1.1"
+    "chalk": "^4.1.1",
+    "jsonschema": "^1.4.0"
   }
 }

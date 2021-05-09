@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "properties": {
+    "loadModules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "excludePlugins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "initOrder": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "defaultTasks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "watchers": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["default"],
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "vendor": {
+      "type": "string"
+    }
+  },
+  "required": ["vendor"]
+}

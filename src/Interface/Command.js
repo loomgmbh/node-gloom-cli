@@ -1,5 +1,6 @@
 const Logger = require('../Util/Logger');
 const FileSystem = require('../Util/FileSystem');
+const Loader = require('../Util/Loader');
 
 module.exports = class Command {
 
@@ -7,6 +8,10 @@ module.exports = class Command {
     this.args = args;
     this.logger = new Logger();
     this.fs = new FileSystem(this.logger);
+  }
+
+  loader(paths) {
+    return new Loader(paths);
   }
 
   required(...params) {

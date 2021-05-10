@@ -5,29 +5,29 @@ const Command = require('../Interface/Command');
 module.exports = class Comp extends Command {
 
   describe() {
-    this.logger.log('  gloom comp <category:string> <component:string> [js:boolean]');
+    this.logger.log('  gloom comp <category:string> <component:string> [js:boolean] [force:boolean]');
     this.logger.log('    - create a component in components directory');
   }
 
   execute() {
     if (this.required('category', 'component')) return;
 
+    const root = this.fs.root();
+    if (root === null) return;
+
     const VARS = {
-      THEME: Path.basename(process.cwd()),
+      THEME: Path.basename(root),
       CATEGORY: this.args[1],
       COMPONENT: this.args[2],
-      THEME_: Path.basename(process.cwd()).replace(new RegExp('[-]', 'g'), '_'),
+      THEME_: Path.basename(root).replace(new RegExp('[-]', 'g'), '_'),
       CATEGORY_: this.args[1].replace(new RegExp('[-]', 'g'), '_'),
       COMPONENT_: this.args[2].replace(new RegExp('[-]', 'g'), '_'),
     };
 
-    this.fs.mkdirs('src', 'components', VARS.CATEGORY, VARS.COMPONENT);
-    this.fs.copy(Path.join(__dirname, '../../template/_component.twig'), Path.join(process.cwd(), 'src/components', VARS.CATEGORY, VARS.COMPONENT, VARS.COMPONENT + '.twig'), VARS);
-    this.fs.copy(Path.join(__dirname, '../../template/_component.sass'), Path.join(process.cwd(), 'src/components', VARS.CATEGORY, VARS.COMPONENT, VARS.COMPONENT + '.sass'), VARS);
-    if (this.args[2] !== undefined && this.args[2] !== '0') {
-      this.fs.copy(Path.join(__dirname, '../../template/_component.js'), Path.join(process.cwd(), 'src/components', VARS.CATEGORY, VARS.COMPONENT, VARS.COMPONENT + '.js'), VARS);
-      this.fs.copy(Path.join(__dirname, '../../template/_component.yml'), Path.join(process.cwd(), 'src/components', VARS.CATEGORY, VARS.COMPONENT, VARS.COMPONENT + '.yml'), VARS);
-    }
+    this.fs.copyFull(Path.join(__dirname, '../../template/comp' + (this.args[3] ? '_js' : '')), root, VARS, true, (from, to, isDir) => {
+      this.logger.log('Create "' + to.substring(root.length + 1) + '" ...');
+    });
+
     this.logger.success('Created component ' + VARS.COMPONENT);
   }
 

@@ -5,14 +5,15 @@
   "initOrder": [
     "assets",
     "register",
+    "libs",
     "scripts", 
     "styles"
   ],
   "defaultTasks": [
     "assets",
     "register",
+    "libs",
     "scripts",
     "styles"
-  ],
-  "vendor": "src/vendor"
+  ]
 }

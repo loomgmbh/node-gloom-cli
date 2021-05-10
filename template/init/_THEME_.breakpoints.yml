@@ -1,0 +1,16 @@
+[[THEME]].narrow:
+  label: narrow
+  mediaQuery: 'all and (max-width: 599px)'
+  weight: 0
+[[THEME]].medium:
+  label: medium
+  mediaQuery: 'all and (min-width: 600px) and (max-width: 1024px)'
+  weight: 1
+[[THEME]].wide:
+  label: wide
+  mediaQuery: 'all and (min-width: 1025px)'
+  weight: 2
+[[THEME]].desktop:
+  label: desktop
+  mediaQuery: 'all and (min-width: 1440px)'
+  weight: 3

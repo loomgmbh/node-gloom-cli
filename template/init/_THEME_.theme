@@ -1,0 +1,5 @@
+<?php
+
+function [[THEME]]_preprocess(&$vars, $hook) {
+  $vars['comp'] = '/themes/[[THEME]]/src/components';
+}

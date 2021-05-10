@@ -5,6 +5,13 @@ const SchemaValidate = require('jsonschema').validate;
 
 const Logger = require('./Logger');
 
+/**
+ * @callback copyCallback
+ * @param {string} from
+ * @param {string} to
+ * @param {boolean} isDir
+ */
+
 module.exports = class FileSystem {
 
   static findFileRoot(path, file) {
@@ -18,6 +25,60 @@ module.exports = class FileSystem {
       root = parent;
     }
     return null;
+  }
+
+  /**
+   * @param {string} from 
+   * @param {string} to 
+   * @param {object} replaces
+   * @param {boolean} force
+   * @param {copyCallback} callback
+   */
+   static copyPath(from, to, replaces = {}, force = false, callback = null) {
+    if (FS.statSync(from).isFile()) {
+      to = FileSystem.replace(Path.join(to, Path.basename(from)), replaces, true);
+      if (!FS.existsSync(to) || force) {
+        if (callback) callback(from, to, false);
+        FS.writeFileSync(to, FileSystem.replace(FS.readFileSync(from).toString(), replaces));
+      }
+    } else {
+      const files = FS.readdirSync(from);
+      for (const file of files) {
+        const path = Path.join(from, file);
+        const toPath = FileSystem.replace(Path.join(to, file), replaces, true);
+
+        if (FS.statSync(path).isDirectory()) {
+          if (!FS.existsSync(toPath)) {
+            if (callback) callback(path, toPath, true);
+            FS.mkdirSync(toPath);
+          }
+          FileSystem.copyPath(path, toPath, replaces, force, callback);
+        } else {
+          if (!FS.existsSync(toPath) || force) {
+            if (callback) callback(path, toPath, false);
+            FS.writeFileSync(toPath, FileSystem.replace(FS.readFileSync(path).toString(), replaces));
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * @param {string} content 
+   * @param {object} replaces 
+   * @param {boolean} isPath 
+   */
+  static replace(content, replaces = {}, isPath = false) {
+    for (const field in replaces) {
+      let regex = null;
+      if (isPath) {
+        regex = new RegExp('_' + field + '_', 'g');
+      } else {
+        regex = new RegExp('\\[\\[' + field + '\\]\\]', 'g');
+      }
+      content = content.replace(regex, replaces[field]);
+    }
+    return content;
   }
 
   /**
@@ -46,6 +107,17 @@ module.exports = class FileSystem {
       }
       FS.writeFileSync(Path.normalize(to), content);
     }
+  }
+
+  /**
+   * @param {string} from 
+   * @param {string} to 
+   * @param {object} replaces
+   * @param {boolean} force
+   * @param {copyCallback} callback
+   */
+  copyFull(from, to, replaces = {}, force = false, callback = null) {
+    return FileSystem.copyPath(from, to, replaces, force, callback);
   }
 
   shell(command, ...args) {
@@ -116,6 +188,16 @@ module.exports = class FileSystem {
       return false;
     }
     return true;
+  }
+
+  root() {
+    const path = this.findRoot(Path.join(process.cwd(), 'gloom.json'), 'gloom.json');
+
+    if (path === null) {
+      this.logger.abort('No gloom.json found, install gloom theme with "gloom init".');
+      return null;
+    }
+    return Path.dirname(path);
   }
 
 }

@@ -1,0 +1,16 @@
+@import 'breakpoints'
+
+@mixin limiter
+  box-sizing: content-box
+
+  +medium-wide
+    margin: 0 auto
+
+  +wide
+    max-width: 1200px
+
+  +medium
+    padding: 0 30px
+
+  +narrow
+    padding: 0 20px

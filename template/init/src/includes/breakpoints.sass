@@ -1,0 +1,51 @@
+$bp-narrow-min: 0px
+$bp-narrow-max: 599px
+
+$bp-medium-min: 600px
+$bp-medium-max: 1024px
+
+$bp-wide-min: 1025px
+$bp-wide-max: 1439px
+
+$bp-desktop-min: 1440px
+
+$bp-content-width: 1200px
+
+
+
+@mixin narrow
+  @media screen and (max-width: $bp-narrow-max)
+    @content
+
+@mixin narrow-medium
+  @media (max-width: $bp-medium-max)
+    @content
+
+@mixin medium
+  @media (min-width: $bp-medium-min) and (max-width: $bp-medium-max)
+    @content
+
+@mixin medium-wide
+  @media (min-width: $bp-medium-min)
+    @content
+
+@mixin wide
+  @media (min-width: $bp-wide-min)
+    @content
+
+/* ugly padding fix */
+@mixin wide-to-content
+  @media (min-width: $bp-wide-min) and (max-width: $bp-content-width)
+    @content
+
+@mixin narrow-hd
+  @media (max-width: 1279px)
+    @content
+
+@mixin hd
+  @media (min-width: 1280px)
+    @content
+
+@mixin desktop
+  @media (min-width: $bp-desktop-min)
+    @content

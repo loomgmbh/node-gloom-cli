@@ -1,0 +1,14 @@
+{{ attach_library('[[THEME]]/blende') }}
+
+<div class="blende">
+  <div class="blende__loader">
+    {% block loader %}
+      {{ loader }}
+    {% endblock %}
+  </div>
+  <div class="blende__wrapper">
+    <div class="blende__content">
+      {% block content %}{{ content }}{% endblock %}
+    </div>
+  </div>
+</div>

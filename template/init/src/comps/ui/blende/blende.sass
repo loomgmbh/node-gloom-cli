@@ -1,0 +1,23 @@
+.blende
+  width: 100%
+
+  &__wrapper
+    overflow: hidden
+
+  .js &__wrapper // if js is active hide the content immediately
+    height: 0
+
+  &--inited &__wrapper
+    height: 0
+
+  &--loaded &__wrapper
+    height: auto
+    overflow: visible
+
+  &--inited &__loader
+    display: flex
+    justify-content: center
+    align-items: center
+
+  &--loaded &__loader
+    display: none

@@ -1,0 +1,27 @@
+{{ attach_library('[[THEME]]/rail') }}
+
+{% import _self as menus %}
+
+{% if items %}
+  <nav class="rail">
+    {{ menus.menu_links(items, attributes, 0) }}
+  </nav>
+{% endif %}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% for item in items %}
+      <a href="{{ item.url }}" {{ item.link_attributes|without('class') }}>
+        {{- item.title -}}
+      </a>
+      {%- if not loop.last -%}
+        {{- "　" -}}
+      {% endif %}
+      {% if item.below %}
+        {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+

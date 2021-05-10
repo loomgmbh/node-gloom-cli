@@ -1,0 +1,3 @@
+library:
+  dependencies:
+    - loom_components/comp

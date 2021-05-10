@@ -1,0 +1,16 @@
+name: [[THEME]] Theme
+description: 'Reponsive Theme for [[THEME]]'
+type: theme
+core_version_requirement: 9.x
+base theme: stable
+screenshot: screenshot.png
+
+#Regions
+regions:
+  header: 'Header'
+  admin: 'Admin'
+  content: 'Content'
+  footer: 'Footer'
+
+libraries:
+  - [[THEME]]/base

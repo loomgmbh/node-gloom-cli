@@ -1,4 +1,7 @@
 {
+  "custom": {
+    "tasks": "tasks"
+  },
   "loadModules": [
     "gloom-tasks"
   ],

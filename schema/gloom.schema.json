@@ -1,6 +1,14 @@
 {
   "type": "object",
   "properties": {
+    "tasks": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "string"
+        }
+      }
+    },
     "loadModules": {
       "type": "array",
       "items": {

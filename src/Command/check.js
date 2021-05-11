@@ -11,7 +11,7 @@ module.exports = class Check extends Command {
 
   execute() {
     this.logger.log('Check install gloom theme ...');
-    const path = this.fs.findRoot(Path.join(process.cwd(), 'gloom.json'), 'gloom.json');
+    const path = this.fs.root();
 
     if (path === null) {
       this.logger.abort('No gloom.json found, install gloom theme with "gloom init".');

@@ -1,6 +1,7 @@
 const Logger = require('../Util/Logger');
 const FileSystem = require('../Util/FileSystem');
 const Loader = require('../Util/Loader');
+const Drupal = require('../Util/Drupal');
 
 module.exports = class Command {
 
@@ -8,6 +9,7 @@ module.exports = class Command {
     this.args = args;
     this.logger = new Logger();
     this.fs = new FileSystem(this.logger);
+    this.drupal = new Drupal(this);
   }
 
   loader(paths) {

@@ -11,26 +11,26 @@ module.exports = class Check extends Command {
 
   execute() {
     this.logger.log('Check install gloom theme ...');
-    const path = this.fs.root();
+    const path = this.fs.findRoot(Path.join(process.cwd(), 'gloom.json'), 'gloom.json');
 
     if (path === null) {
       this.logger.abort('No gloom.json found, install gloom theme with "gloom init".');
       return;
     }
 
-    this.logger.log('Check if "gloom-plugin" is locally installed ...');
+    this.logger.log('Check if "gloom" is locally installed ...');
     const loader = this.loader([path]);
     try {
-      loader.load('gloom-plugin');
+      loader.load('gloom');
     } catch (e) {
-      this.logger.abort('"gloom-plugin" is not install or has an error.');
+      this.logger.abort('Package "gloom" is not install or has an error.');
       return;
     }
 
     this.logger.log('Check schema of "' + path + '" ...');
     const gloom = require(path);
     if (!this.fs.checkSchema(gloom, 'gloom')) {
-      this.logger.abort('gloom.json is not valid.');
+      this.logger.abort('gloom.json config is not valid.');
       return;
     }
 
@@ -58,9 +58,9 @@ module.exports = class Check extends Command {
     }
 
     if (error) {
-      this.logger.errorLite('gloom.json is not valid.');
+      this.logger.errorLite('gloom.json config is not valid.');
     } else {
-      this.logger.successLite('gloom.json is valid.');
+      this.logger.successLite('gloom.json config is valid.');
     }
   }
 

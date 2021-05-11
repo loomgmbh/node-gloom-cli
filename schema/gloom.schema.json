@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "tasks": {
+    "custom": {
       "type": "object",
       "properties": {
         "tasks": {

@@ -24,7 +24,7 @@ module.exports = class Comp extends Command {
       COMPONENT_: this.args[2].replace(new RegExp('[-]', 'g'), '_'),
     };
 
-    this.fs.copyFull(Path.join(__dirname, '../../template/comp' + (this.args[3] ? '_js' : '')), root, VARS, true, (from, to, isDir) => {
+    this.fs.copyFull(Path.join(__dirname, '../../template/comp' + (this.args[3] === 'true' ? '_js' : '')), root, VARS, true, (from, to, isDir) => {
       this.logger.log('Create "' + to.substring(root.length + 1) + '" ...');
     });
 

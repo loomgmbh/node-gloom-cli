@@ -54,11 +54,19 @@ module.exports = class Logger {
     console.log(Chalk.blue('[NOTICE] ' + message));
   }
 
+  /**
+   * @param {(string|Error)} error 
+   */
   error(error) {
     if (this._silent) return;
+    this.nl();
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
-    console.log(Chalk.red('[ERROR]: The command has an unmanaged error. Please inform the developer about the error -> https://github.com/loomgmbh/node-gloom-cli/issues/new'));
-    console.log(error);
+    if (typeof error === 'string') {
+      console.log(Chalk.red('[ERROR]: ' + error));
+    } else {
+      console.log(Chalk.red('[ERROR]: The command has an unmanaged error. Please inform the developer about the error -> https://github.com/loomgmbh/node-gloom-cli/issues/new'));
+      console.log(error);
+    }
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
   }
 
@@ -68,6 +76,7 @@ module.exports = class Logger {
   }
 
   fatal(error) {
+    this.nl();
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
     console.log(Chalk.red('[FATAL ERROR]: Please inform the developer about the error -> https://github.com/loomgmbh/node-gloom-cli/issues/new'));
     console.log(error);

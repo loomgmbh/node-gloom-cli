@@ -58,9 +58,9 @@ module.exports = class Check extends Command {
     }
 
     if (error) {
-      this.logger.errorLite('gloom.json config is not valid.');
+      this.logger.error('gloom.json config is not valid.');
     } else {
-      this.logger.successLite('gloom.json config is valid.');
+      this.logger.success('gloom.json config is valid.');
     }
   }
 

@@ -21,7 +21,6 @@
     "mini": [], // generate a task "gulp watch:mini" which load all tasks tagged with "watcher" or "watcher:mini" and execute the gulp task "<task>:watch:mini" or "<task>:watch"
     "js": ["scripts"] // generate a task "gulp watch:js" with default task "scripts" (only usefull with watch tasks)
   },
-  "vendor": "gulp/src/vendor", // define the vendor directory all paths are relative to this path
 
   // ... overwrite task default settings
 

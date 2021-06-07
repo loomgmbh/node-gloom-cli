@@ -23,35 +23,35 @@ module.exports = class Logger {
     }
   }
 
-  success(message) {
+  success(message, placeholders = {}) {
     if (this._silent) return;
     this.nl();
     console.log(Chalk.green('-'.repeat(process.stdout.columns)));
-    console.log(Chalk.green('[SUCCESS]: ' + message));
+    console.log(Chalk.green('[SUCCESS]: ' + this.replaceObject(message, placeholders, Chalk.magenta)));
     console.log(Chalk.green('-'.repeat(process.stdout.columns)));
   }
 
-  successLite(message) {
+  successLite(message, placeholders = {}) {
     if (this._silent) return;
-    console.log(Chalk.green('[SUCCESS]: ' + message));
+    console.log(Chalk.green('[SUCCESS]: ' + this.replaceObject(message, placeholders, Chalk.magenta)));
   }
 
-  abort(message) {
+  abort(message, placeholders = {}) {
     if (this._silent) return;
     this.nl();
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
-    console.log(Chalk.red('[ABORT]: ' + message));
+    console.log(Chalk.red('[ABORT]: ' + this.replaceObject(message, placeholders, Chalk.magenta)));
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
   }
 
-  log(...messages) {
+  log(message, placeholders = {}) {
     if (this._silent) return;
-    console.log(Chalk.green(messages.join(' ')));
+    console.log(Chalk.green(this.replaceObject(message, placeholders, Chalk.magenta)));
   }
 
-  notice(message) {
+  notice(message, placeholders = {}) {
     if (this._silent) return;
-    console.log(Chalk.blue('[NOTICE] ' + message));
+    console.log(Chalk.blue('[NOTICE] ' + this.replaceObject(message, placeholders, Chalk.magenta)));
   }
 
   /**
@@ -70,9 +70,9 @@ module.exports = class Logger {
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
   }
 
-  errorLite(message) {
+  errorLite(message, placeholders = {}) {
     if (this._silent) return;
-    console.log(Chalk.red('[ERROR]: ' + message));
+    console.log(Chalk.red('[ERROR]: ' + this.replaceObject(message, placeholders, Chalk.magenta)));
   }
 
   fatal(error) {
@@ -81,6 +81,30 @@ module.exports = class Logger {
     console.log(Chalk.red('[FATAL ERROR]: Please inform the developer about the error -> https://github.com/loomgmbh/node-gloom-cli/issues/new'));
     console.log(error);
     console.log(Chalk.red('-'.repeat(process.stdout.columns)));
+  }
+
+  /**
+   * @param {string} message
+   * @param {Object} placeholders
+   * @param {string|import('../../defs').Inserter} inserter
+   * @returns {string}
+   */
+  replaceObject(message, placeholders = {}, inserter = '"') {
+    let doInserter = inserter;
+
+    if (typeof doInserter !== 'function') {
+      doInserter = (v) => {
+        if (typeof inserter === 'string') {
+          return inserter + v + inserter;
+        }
+        return v;
+      };
+    }
+
+    for (const placeholder in placeholders) {
+      message = message.replace(new RegExp(placeholder, 'g'), doInserter(placeholders[placeholder]));
+    }
+    return message;
   }
   
 }

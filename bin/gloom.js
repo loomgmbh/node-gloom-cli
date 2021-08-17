@@ -22,5 +22,5 @@ try {
     command.error(error);
   }
 } catch (error) {
-  Logger.fatal(error);
+  (new Logger()).fatal(error);
 }

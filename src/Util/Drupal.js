@@ -1,12 +1,10 @@
 const Path = require('path');
 const FS = require('fs');
 
-const Command = require('../Interface/Command');
-
 module.exports = class Drupal {
 
   /**
-   * @param {Command} Command
+   * @param {import('../Interface/Command')} Command
    */
   constructor(command) {
     this._command = command;
@@ -16,7 +14,7 @@ module.exports = class Drupal {
   }
 
   /**
-   * @returns {Command}
+   * @returns {import('../Interface/Command')}
    */
   get command() {
     return this._command;

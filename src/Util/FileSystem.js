@@ -88,12 +88,48 @@ module.exports = class FileSystem {
     this.logger = logger || new Logger();
   }
 
+  /**
+   * @param  {...string} args 
+   * @returns {(string|null)}
+   */
+  path(...args) {
+    const root = this.root();
+    if (root === null) return null;
+    return Path.join(root, ...args);
+  }
+
   findRoot(path, file) {
     return FileSystem.findFileRoot(path, file);
   }
 
   exists(path) {
     return FS.existsSync(path);
+  }
+
+  rel(path) {
+    if (Path.isAbsolute(path)) {
+      const root = this.root();
+      
+      if (root === null) {
+        return path;
+      } else {
+        return path.substring(root.length);
+      }
+    }
+    return path;
+  }
+
+  /**
+   * @param {string} path 
+   */
+  rm(path) {
+    if (FS.statSync(path).isDirectory()) {
+      FS.rmdirSync(path);
+      this.logger.log('Delete directory "' + this.rel(path) + '" ...');
+    } else {
+      FS.rmSync(path);
+      this.logger.log('Delete file "' + this.rel(path) + '" ...');
+    }
   }
 
   copy(from, to, replaces = {}) {
@@ -190,6 +226,9 @@ module.exports = class FileSystem {
     return true;
   }
 
+  /**
+   * @returns {(string|null)}
+   */
   root() {
     const path = this.findRoot(Path.join(process.cwd(), 'gloom.json'), 'gloom.json');
 

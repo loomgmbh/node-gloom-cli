@@ -1,26 +1,37 @@
 #!/usr/bin/env node
 
-// exclude base args
 const Logger = require('../src/Util/Logger');
-const args = [...process.argv];
+const Path = require('path');
 
+const args = [...process.argv];
+const logger = new Logger();
+
+// exclude base args
 while (args.length && (args[0].endsWith('node') || args[0].endsWith('gloom'))) {
   args.shift();
 }
 
 if (!args.length) {
-  console.log('No command givin, execute "help"');
+  logger.warning('No command givin, execute "help"');
   args.push('help');
 }
 
 try {
-  const Command = require('../src/Command/' + args[0]);
+  const Command = require('../src/Command/' + Path.join(...args[0].split(':')));
   const command = new Command(args);
   try {
-    command.execute();
+    command.doExecute()
+      .then(() => {
+        command.destroy();
+      })
+      .catch((error) => {
+        command.error(error);
+        command.destroy();
+      });
   } catch (error) {
     command.error(error);
+    command.destroy();
   }
 } catch (error) {
-  (new Logger()).fatal(error);
+  logger.fatal(error);
 }

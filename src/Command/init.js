@@ -5,10 +5,12 @@ const Command = require('../Interface/Command');
 module.exports = class Init extends Command {
 
   describe() {
-    this.logger.log('  gloom init [force:boolean]');
-    this.logger.log('    - create package.json');
-    this.logger.log('    - install gloom-tasks');
-    this.logger.log('    - create default file tree for theme');
+    return [
+      'init [force:boolean]',
+      '- create package.json',
+      '- install gloom-tasks',
+      '- create default file tree for theme',
+    ];
   }
 
   execute() {

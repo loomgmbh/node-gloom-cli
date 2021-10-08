@@ -5,8 +5,10 @@ const Command = require('../Interface/Command');
 module.exports = class Comp extends Command {
 
   describe() {
-    this.logger.log('  gloom comp <category:string> <component:string> [js:boolean] [force:boolean]');
-    this.logger.log('    - create a component in components directory');
+    return [
+      'comp <category:string> <component:string> [js:boolean] [force:boolean]',
+      'create a component in components directory',
+    ];
   }
 
   execute() {

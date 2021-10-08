@@ -7,6 +7,7 @@ module.exports = class Logger {
   }
 
   nl() {
+    if (this._silent) return;
     console.log();
   }
 
@@ -21,6 +22,18 @@ module.exports = class Logger {
     } else {
       return this._silent;
     }
+  }
+
+  logging(message, placeholders, callback) {
+    process.stdout.write(Chalk.cyan(this.replaceObject(message, placeholders, Chalk.green)));
+    const value = callback();
+    
+    if (value) {
+      console.log(' ' + Chalk.green('✔'));
+    } else {
+      console.log(' ' + Chalk.red('✘'));
+    }
+    return value;
   }
 
   success(message, placeholders = {}) {
@@ -49,9 +62,14 @@ module.exports = class Logger {
     console.log(Chalk.green(this.replaceObject(message, placeholders, Chalk.magenta)));
   }
 
+  warning(message, placeholders = {}) {
+    if (this._silent) return;
+    console.log(Chalk.yellow('[WARNING] ' + this.replaceObject(message, placeholders, Chalk.magenta)));
+  }
+
   notice(message, placeholders = {}) {
     if (this._silent) return;
-    console.log(Chalk.blue('[NOTICE] ' + this.replaceObject(message, placeholders, Chalk.magenta)));
+    console.log(Chalk.cyan('[NOTICE] ' + this.replaceObject(message, placeholders, Chalk.magenta)));
   }
 
   /**

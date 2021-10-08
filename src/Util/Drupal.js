@@ -7,33 +7,15 @@ module.exports = class Drupal {
    * @param {import('../Interface/Command')} Command
    */
   constructor(command) {
-    this._command = command;
-    this._logger = this.command.logger;
-
-    this._root = null;
-  }
-
-  /**
-   * @returns {import('../Interface/Command')}
-   */
-  get command() {
-    return this._command;
-  }
-
-  root() {
-    if (this._root === null) {
-      this._root = Path.dirname(this.command.fs.findRoot(process.cwd(), '.ddev'));
-      if (!this._root || !FS.existsSync(Path.join(this._root, 'composer.json')) || !FS.existsSync(Path.join(this._root, 'config'))) {
-        this._root = null;
-      }
-    }
-    return this._root;
+    this.command = command;
+    this.logger = this.command.logger;
   }
 
   theme(theme = null) {
     const root = this.root();
 
-    if (root && theme) {
+    if (root === null) return null;
+    if (theme) {
       return Path.join(root, 'web/themes', theme);
     } else {
       return Path.join(root, 'web/themes');
@@ -51,6 +33,49 @@ module.exports = class Drupal {
       }
     }
     return  null;
+  }
+
+  /**
+   * @param {string} cwd
+   * @returns {(string|null)}
+   */
+  root(cwd = null) {
+    if (cwd === null) cwd = process.cwd();
+    let root = this.command.fs.findRoot(cwd, '.ddev');
+    if (root !== null) {
+      root = Path.dirname(root);
+      if (FS.existsSync(Path.join(root, 'composer.json')) && FS.existsSync(Path.join(root, 'config'))) {
+        return root;
+      }
+    }
+    this.logger.abort('No drupal root found, please use this only in drupal site.');
+    return null;
+  }
+
+  /**
+   * @param  {...string} args 
+   * @returns {(string|null)}
+   */
+  path(...args) {
+    const root = this.root();
+    if (root === null) return null;
+    return Path.join(root, ...args);
+  }
+
+  /**
+   * @param {string} path 
+   * @returns {string}
+   */
+  rel(path) {
+    if (Path.isAbsolute(path)) {
+      const root = this.root();
+      if (root === null) {
+        return path;
+      } else {
+        return path.substring(root.length);
+      }
+    }
+    return path;
   }
   
 }

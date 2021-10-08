@@ -89,10 +89,12 @@ module.exports = class FileSystem {
   }
 
   /**
+   * @deprecated
    * @param  {...string} args 
    * @returns {(string|null)}
    */
   path(...args) {
+    this.logger.warning('DEPRECATED: FileSystem.path(...args) ' + new Error().stack);
     const root = this.root();
     if (root === null) return null;
     return Path.join(root, ...args);
@@ -106,7 +108,13 @@ module.exports = class FileSystem {
     return FS.existsSync(path);
   }
 
+  /**
+   * @deprecated
+   * @param {string} path 
+   * @returns {string}
+   */
   rel(path) {
+    this.logger.warning('DEPRECATED: FileSystem.rel(path) ' + new Error().stack);
     if (Path.isAbsolute(path)) {
       const root = this.root();
       
@@ -198,6 +206,27 @@ module.exports = class FileSystem {
   }
 
   /**
+   * @param {string} path 
+   * @param {string[]} files 
+   * @param {string} rel
+   * @returns {string[]}
+   */
+  filesRecursive(path, files = [], rel = '') {
+    for (const file of FS.readdirSync(path)) {
+      const _path = Path.join(path, file);
+      const _rel = Path.join(rel, file);
+      const stat = FS.statSync(_path);
+
+      if (stat.isFile()) {
+        files.push(_rel);
+      } else {
+        this.filesRecursive(_path, files, _rel);
+      }
+    }
+    return files;
+  }
+
+  /**
    * @param {object} object 
    * @param {(string|object)} schemaname 
    * @param {function} onError 
@@ -227,9 +256,11 @@ module.exports = class FileSystem {
   }
 
   /**
+   * @deprecated use this.gloom.root() instead
    * @returns {(string|null)}
    */
   root() {
+    this.logger.warning('DEPRECATED: FileSystem.root() ' + new Error().stack);
     const path = this.findRoot(Path.join(process.cwd(), 'gloom.json'), 'gloom.json');
 
     if (path === null) {

@@ -5,13 +5,15 @@ const Command = require('../Interface/Command');
 module.exports = class Check extends Command {
 
   describe() {
-    this.logger.log('  gloom check');
-    this.logger.log('    - validate gloom.json');
+    return [
+      'check',
+      'validate gloom.json',
+    ];
   }
 
   execute() {
     this.logger.log('Check install gloom theme ...');
-    const path = this.fs.findRoot(Path.join(process.cwd(), 'gloom.json'), 'gloom.json');
+    const path = this.gloom.path('gloom.json');
 
     if (path === null) {
       this.logger.abort('No gloom.json found, install gloom theme with <command>.', {'<command>': 'gloom init'});

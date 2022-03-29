@@ -1,3 +1,11 @@
+
+---
+**ABANDONED - DO NOT USE**
+
+This project has moved to https://gitlab.loom.de/loom/node-modules/gloom-cli 
+
+---
+
 # 1. - Table of Contents
 - [1. - Table of Contents](#1---table-of-contents)
 - [2. - Installation Command](#2---installation-command)
